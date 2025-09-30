@@ -9,23 +9,3 @@ export const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   GATE_PASS_VALIDITY_DAYS: 7,
 };
-
-// src/utils/jwt.ts
-import jwt from 'jsonwebtoken';
-import { env } from '../config/env';
-
-export interface JWTPayload {
-  userId: string;
-  email: string;
-  role: 'student' | 'admin';
-}
-
-export const generateToken = (payload: JWTPayload): string => {
-  return jwt.sign(payload, env.JWT_SECRET, {
-    expiresIn: env.JWT_EXPIRES_IN,
-  });
-};
-
-export const verifyToken = (token: string): JWTPayload => {
-  return jwt.verify(token, env.JWT_SECRET) as JWTPayload;
-};

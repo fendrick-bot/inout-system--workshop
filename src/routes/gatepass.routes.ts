@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { GatePassService } from '../services/gatepass.service';
 import { authenticate, requireRole, AuthRequest } from '../middleware/auth';
-import { validate } from '../middleware/validator';
+import { validate } from '../middleware/validate';
 import { scanQRSchema } from '../validators/gatepass.validator';
 
 const router = Router();
