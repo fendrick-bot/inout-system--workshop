@@ -1,7 +1,7 @@
 import { db } from '../db';
 import { gatePasses, gatePassLogs, users } from '../db/schema';
 import { eq, and, desc } from 'drizzle-orm';
-import { generateQRData, generateQRCodeImage } from '../utils/qrcode';
+import { generateQRData, generateQRCodeImage, saveQRCodeImage } from '../utils/qrcode';
 import { env } from '../config/env';
 
 export class GatePassService {
@@ -38,9 +38,13 @@ export class GatePassService {
 
     const qrData = generateQRData(userId, gatePass.id);
     const qrCodeImage = await generateQRCodeImage(qrData);
+    const qrCodePath = await saveQRCodeImage(qrData, gatePass.id);
 
     const [updatedPass] = await db.update(gatePasses)
-      .set({ qrCode: qrData })
+      .set({ 
+        qrCode: qrData,
+        qrCodePath: qrCodePath
+      })
       .where(eq(gatePasses.id, gatePass.id))
       .returning();
 
